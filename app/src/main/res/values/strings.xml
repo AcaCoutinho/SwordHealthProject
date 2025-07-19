@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SwordHealthProject</string>
+    <string name="title_activity_cat_details_screen">CatDetailsScreen</string>
+</resources>
