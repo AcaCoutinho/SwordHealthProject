@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,11 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SwordHealthProject" >
-        <activity
-            android:name=".ui.screens.CatDetailsScreen"
-            android:exported="false"
-            android:label="@string/title_activity_cat_details_screen"
-            android:theme="@style/Theme.SwordHealthProject" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
