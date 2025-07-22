@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.swordhealthproject.data.entities.CatBreed
+import com.example.swordhealthproject.utils.Converters
 
 @Database(
     entities = [CatBreed::class],
-    version = 1
+    version = 14
 )
+@TypeConverters(Converters::class)
 abstract class CatBreedDatabase: RoomDatabase(){
 
     abstract fun getCatBreedDAO(): CatBreedDAO
@@ -30,7 +33,7 @@ abstract class CatBreedDatabase: RoomDatabase(){
                 context.applicationContext,
                 CatBreedDatabase::class.java,
                 "catbreed.db"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
         }
     }
 }

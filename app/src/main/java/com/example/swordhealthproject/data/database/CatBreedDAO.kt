@@ -16,7 +16,7 @@ interface CatBreedDAO {
     suspend fun upsert(catBreed: CatBreed) : Long
 
     @Query("SELECT * FROM catbreed")
-    fun getAllCatBreeds(): LiveData<List<CatBreed>>
+    fun getAllFavourites(): LiveData<List<CatBreed>>
 
     @Delete
     suspend fun deleteCatBreed(catBreed: CatBreed)

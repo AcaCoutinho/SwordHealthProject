@@ -8,10 +8,12 @@ import java.io.Serializable
 data class CatBreed (
     @PrimaryKey
     val id: String,
-    val breedName: String,
+    val name: String,
     val temperament: String,
     val origin: String,
-    val lifespan: String,
+    val life_span: String,
     val description: String,
-    val image: String
+    val reference_image_id: String?,
+    val image: String? = "",
+    var isFavourite: Boolean = false
 ): Serializable

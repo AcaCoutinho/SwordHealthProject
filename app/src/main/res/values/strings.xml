@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SwordHealthProject</string>
     <string name="title_activity_cat_details_screen">CatDetailsScreen</string>
+    <string name="not_found">Not Found</string>
 </resources>

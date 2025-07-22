@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SwordHealthProjectTheme {
-                MainScreen()
+                MainScreen(catBreedViewModel = catBreedViewModel)
             }
         }
 

@@ -1,9 +1,10 @@
 package com.example.swordhealthproject.ui.viewmodel
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,59 +12,102 @@ import com.example.swordhealthproject.data.entities.CatBreed
 import com.example.swordhealthproject.data.repository.CatBreedRepository
 import com.example.swordhealthproject.utils.Resource
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class CatBreedViewModel (app: Application, val catBreedRepository: CatBreedRepository): AndroidViewModel(app){
-    val catBreeds: MutableLiveData<Resource<CatBreed>> = MutableLiveData()
-    var page = 1
-    var catBreedsResponse: CatBreed?=null
+    val catBreeds = MutableLiveData<Resource<List<CatBreed>>>()
+    val favourites = MutableLiveData<List<CatBreed>>()
+    var selectedCatBreed by mutableStateOf<CatBreed?>(null)
 
-    val catBreedSearch: MutableLiveData<Resource<CatBreed>> = MutableLiveData()
-    var searchCatBreedResponse: CatBreed?= null
-    var searchQuery: String?= null
+    var currentPage by mutableIntStateOf(1)
 
-    private fun handleCatBreedsResponse(response: Response<CatBreed>): Resource<CatBreed> {
-        if(response.isSuccessful) {
-            response.body()?.let { resultResponse ->
-                page++
-                return Resource.Success(catBreedsResponse ?: resultResponse)
-            }
-        }
-        return Resource.Error(message = response.message())
+    init {
+        loadFavourites()
+        getCatBreeds()
     }
 
-    private fun handleCatBreedSearchResponse(response: Response<CatBreed>): Resource<CatBreed> {
-        if(response.isSuccessful) {
-            response.body()?.let { resultResponse ->
-                return Resource.Success(catBreedsResponse ?: resultResponse)
-            }
-        }
-        return Resource.Error(message = response.message())
-    }
-
-    fun addFavourites(catBreed: CatBreed) {
-        viewModelScope.launch {
-            catBreedRepository.upsert(catBreed)
-        }
-    }
-
-    fun getFavourites() {
-        catBreedRepository.getFavourites()
-    }
-
-    fun internetConnection(context: Context): Boolean {
-        (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).apply {
-            return getNetworkCapabilities(activeNetwork)?.run{
-                when {
-                    hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                    hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                    hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                    else -> false
+    fun getCatBreeds() = viewModelScope.launch {
+        catBreeds.postValue(Resource.Loading())
+        try {
+            val response = catBreedRepository.getCatBreeds(page = currentPage - 1)
+            if (response.isSuccessful) {
+                response.body()?.let { newBreeds ->
+                    val updatedBreeds = newBreeds.map { breed ->
+                        val image = try {
+                            val imgResponse = catBreedRepository.getImageCatBreed(breed.reference_image_id)
+                            if (imgResponse.isSuccessful) {
+                                imgResponse.body()
+                            } else null
+                        } catch (e: Exception) {
+                            null
+                        }
+                        breed.copy(image = image?.url)
+                    }
+                    val syncCatBreed = syncFavouritesToCatBreeds(updatedBreeds, favourites.value ?: emptyList())
+                    catBreeds.postValue(Resource.Success(syncCatBreed))
+                } ?: run {
+                    catBreeds.postValue(Resource.Error(message = "No results Found"))
                 }
-            } ?: false
+            } else {
+                catBreeds.postValue(Resource.Error(message = response.message()))
+            }
+        } catch (e: Exception) {
+            catBreeds.postValue(Resource.Error(message = e.message ?: "Unknown error"))
         }
     }
 
-    //private suspend fun
+    fun searchCatBreed(query: String) = viewModelScope.launch {
+        catBreeds.postValue(Resource.Loading())
+        try {
+            val response = catBreedRepository.searchCatBreed(query)
+            if (response.isSuccessful) {
+                response.body()?.let { newBreeds ->
+                    val updatedBreeds = newBreeds.map { breed ->
+                        val image = try {
+                            val imgResponse = catBreedRepository.getImageCatBreed(breed.reference_image_id)
+                            if (imgResponse.isSuccessful) {
+                                imgResponse.body()
+                            } else null
+                        } catch (e: Exception) {
+                            null
+                        }
+                        breed.copy(image = image?.url)
+                    }
+                    val syncCatBreed = syncFavouritesToCatBreeds(updatedBreeds, favourites.value ?: emptyList())
+                    catBreeds.postValue(Resource.Success(syncCatBreed))
+                } ?: run {
+                    catBreeds.postValue(Resource.Error(message = "No results Found"))
+                }
+            } else {
+                catBreeds.postValue(Resource.Error(message = response.message()))
+            }
+        } catch (e: Exception) {
+            catBreeds.postValue(Resource.Error(message = e.message ?: "Unknown error"))
+        }
+    }
 
+    fun addToFavourites(catBreed: CatBreed) = viewModelScope.launch {
+        catBreedRepository.upsert(catBreed)
+        loadFavourites()
+    }
+
+    fun loadFavourites() {
+        catBreedRepository.getFavourites().observeForever { favList ->
+            favourites.postValue(favList)
+        }
+    }
+
+    fun deleteCatBreed(catBreed: CatBreed) = viewModelScope.launch {
+        catBreedRepository.deleteCatBreeds(catBreed)
+    }
+
+    fun syncFavouritesToCatBreeds(catBreeds: List<CatBreed>, favourites: List<CatBreed>): List<CatBreed> {
+        val favoritosIds = favourites.map { it.id }.toSet()
+        return catBreeds.map { breed ->
+            if (favoritosIds.contains(breed.id)) {
+                breed.copy(isFavourite = true)
+            } else {
+                breed
+            }
+        }
+    }
 }
