@@ -1,6 +1,7 @@
 package com.example.swordhealthproject.ui.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.swordhealthproject.data.entities.CatBreed
 import com.example.swordhealthproject.data.repository.CatBreedRepository
+import com.example.swordhealthproject.utils.NetworkMonitor
 import com.example.swordhealthproject.utils.Resource
 import kotlinx.coroutines.launch
 
@@ -17,8 +19,9 @@ class CatBreedViewModel (app: Application, val catBreedRepository: CatBreedRepos
     val catBreeds = MutableLiveData<Resource<List<CatBreed>>>()
     val favourites = MutableLiveData<List<CatBreed>>()
     var selectedCatBreed by mutableStateOf<CatBreed?>(null)
-
     var currentPage by mutableIntStateOf(1)
+
+    private var networkMonitor: NetworkMonitor? = null
 
     init {
         loadFavourites()
@@ -101,12 +104,27 @@ class CatBreedViewModel (app: Application, val catBreedRepository: CatBreedRepos
     }
 
     fun syncFavouritesToCatBreeds(catBreeds: List<CatBreed>, favourites: List<CatBreed>): List<CatBreed> {
-        val favoritosIds = favourites.map { it.id }.toSet()
+        val favouritesIds = favourites.map { it.id }.toSet()
         return catBreeds.map { breed ->
-            if (favoritosIds.contains(breed.id)) {
+            if (favouritesIds.contains(breed.id)) {
                 breed.copy(isFavourite = true)
             } else {
                 breed
+            }
+        }
+    }
+
+    fun initNetworkMonitoring(context: Context) {
+        if (networkMonitor != null) return
+
+        networkMonitor = NetworkMonitor(context).also { monitor ->
+            monitor.register()
+            viewModelScope.launch {
+                monitor.isConnected.collect { isConnected ->
+                    if (isConnected) {
+                        getCatBreeds()
+                    }
+                }
             }
         }
     }

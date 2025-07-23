@@ -92,19 +92,19 @@ fun MainScreen(navController: NavHostController = rememberNavController(), catBr
         ) {
             composable(Screens.CATBREEDS.route) {
                 when (configuration.orientation) {
-                    Configuration.ORIENTATION_LANDSCAPE -> LandscapeCatBreedsListScreen(navController)
+                    Configuration.ORIENTATION_LANDSCAPE -> LandscapeCatBreedsListScreen(navController, catBreedViewModel)
                     else -> CatBreedsListScreen(navController, catBreedViewModel)
                 }
             }
             composable(Screens.FAVOURITES.route) {
                 when (configuration.orientation) {
-                    Configuration.ORIENTATION_LANDSCAPE -> LandscapeFavouritesScreen(navController)
+                    Configuration.ORIENTATION_LANDSCAPE -> LandscapeFavouritesScreen(navController, catBreedViewModel)
                     else -> FavouritesScreen(navController,catBreedViewModel)
                 }
             }
             composable(Screens.CATDETAILS.route) {
                 when (configuration.orientation) {
-                    Configuration.ORIENTATION_LANDSCAPE -> LandscapeCatDetailsScreen(navController)
+                    Configuration.ORIENTATION_LANDSCAPE -> LandscapeCatDetailsScreen(navController, catBreedViewModel)
                     else -> CatDetailsScreen(navController, catBreedViewModel)
                 }
             }

@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
         val catBreedRepository = CatBreedRepository(CatBreedDatabase(this))
         val viewModelProviderFactory = CatBreedViewModelProviderFactory(application, catBreedRepository)
         catBreedViewModel = ViewModelProvider(this, viewModelProviderFactory).get(CatBreedViewModel::class)
+        catBreedViewModel.initNetworkMonitoring(applicationContext)
     }
 
     override fun onResume() {

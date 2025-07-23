@@ -3,6 +3,8 @@ package com.example.swordhealthproject.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.swordhealthproject.ui.viewmodel.CatBreedViewModel
+import java.nio.file.WatchEvent
 
 @Composable
 fun CatDetailsScreen (navController: NavHostController?, viewModel: CatBreedViewModel){
@@ -43,7 +46,7 @@ fun CatDetailsScreen (navController: NavHostController?, viewModel: CatBreedView
             Text(
                 text = viewModel.selectedCatBreed?.name?: "NOT FOUND",
                 fontSize = 30.sp,
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.weight(3f)
             )
             IconButton(
@@ -58,7 +61,7 @@ fun CatDetailsScreen (navController: NavHostController?, viewModel: CatBreedView
                         viewModel.addToFavourites(viewModel.selectedCatBreed!!)
                     }
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(0.5f)
             ) {
                 Icon(
                     imageVector = if (isFavourite!!) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
@@ -79,26 +82,100 @@ fun CatDetailsScreen (navController: NavHostController?, viewModel: CatBreedView
         Text(
             text = "Lifespan: ${viewModel.selectedCatBreed?.life_span?: "NOT FOUND"}",
             fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.tertiary,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(0.dp, 4.dp)
         )
 
         Text(
             text = "Description: ${viewModel.selectedCatBreed?.description?: "NOT FOUND"}",
             fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.tertiary,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(0.dp, 4.dp)
         )
         Text(
             text = "Temperament: ${viewModel.selectedCatBreed?.temperament?: "NOT FOUND"}",
             fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.tertiary,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(0.dp, 4.dp)
         )
     }
 }
 
 @Composable
-fun LandscapeCatDetailsScreen (navController: NavHostController?,){
-    Text("CatDetailsScreen")
+fun LandscapeCatDetailsScreen (navController: NavHostController?, viewModel: CatBreedViewModel){
+    var isFavourite by remember { mutableStateOf(viewModel.selectedCatBreed?.isFavourite) }
+
+    Row (
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column (
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxHeight().weight(2f).padding(16.dp)
+        ) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(
+                    text = viewModel.selectedCatBreed?.name?: "NOT FOUND",
+                    fontSize = 30.sp,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.weight(3f)
+                )
+                IconButton(
+                    onClick = {
+                        if(viewModel.selectedCatBreed?.isFavourite!!){
+                            isFavourite = false
+                            viewModel.deleteCatBreed(viewModel.selectedCatBreed!!)
+                            viewModel.selectedCatBreed?.isFavourite = false
+                        } else {
+                            isFavourite = true
+                            viewModel.selectedCatBreed?.isFavourite = true
+                            viewModel.addToFavourites(viewModel.selectedCatBreed!!)
+                        }
+                    },
+                    modifier = Modifier.weight(0.5f)
+                ) {
+                    Icon(
+                        imageVector = if (isFavourite!!) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = if (isFavourite!!) "Selected icon button" else "Unselected icon button."
+                    )
+                }
+            }
+
+            if(viewModel.selectedCatBreed?.image?.isEmpty() == false){
+                AsyncImage(
+                    model = viewModel.selectedCatBreed?.image?: "NOT FOUND",
+                    contentDescription = "Cat Breed Image",
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
+                )
+            }
+        }
+
+        Column (
+            modifier = Modifier.fillMaxHeight().weight(2f).padding(16.dp)
+        ) {
+            Text(
+                text = "Lifespan: ${viewModel.selectedCatBreed?.life_span?: "NOT FOUND"}",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(0.dp, 4.dp)
+            )
+
+            Text(
+                text = "Description: ${viewModel.selectedCatBreed?.description?: "NOT FOUND"}",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(0.dp, 4.dp)
+            )
+            Text(
+                text = "Temperament: ${viewModel.selectedCatBreed?.temperament?: "NOT FOUND"}",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(0.dp, 4.dp)
+            )
+        }
+    }
 }
