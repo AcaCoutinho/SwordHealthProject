@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -43,6 +42,8 @@ import com.example.swordhealthproject.ui.composables.CatBreedCard
 import com.example.swordhealthproject.ui.viewmodel.CatBreedViewModel
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.example.swordhealthproject.R
 import com.example.swordhealthproject.utils.Resource
 
 
@@ -70,11 +71,11 @@ fun CatBreedsListScreen (navController: NavHostController?, viewModel: CatBreedV
         ){
             Button(
                 onClick = {
-                    Toast.makeText(context, "Already in this screen", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.already_in_this_screen, Toast.LENGTH_SHORT).show()
                 }
             ) {
                 Text(
-                    text = "Cat Breeds List",
+                    text = stringResource(R.string.cat_breeds_list),
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
@@ -85,7 +86,7 @@ fun CatBreedsListScreen (navController: NavHostController?, viewModel: CatBreedV
                 }
             ) {
                 Text(
-                    text = "Favourites List",
+                    text = stringResource(R.string.favourites_list),
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
@@ -113,10 +114,10 @@ fun CatBreedsListScreen (navController: NavHostController?, viewModel: CatBreedV
                     active = it
                 },
                 placeholder = {
-                    Text(text = "Search for the cat breed")
+                    Text(text = stringResource(R.string.search_for_the_cat_breed))
                 },
                 leadingIcon = {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search Icon")
+                    Icon(imageVector = Icons.Default.Search, contentDescription = stringResource(R.string.search_icon))
                 },
                 trailingIcon = {
                     if(active) {
@@ -129,7 +130,7 @@ fun CatBreedsListScreen (navController: NavHostController?, viewModel: CatBreedV
                                 }
                             },
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Close Icon"
+                            contentDescription = stringResource(R.string.close_icon)
                         )
                     }
                 }
@@ -174,7 +175,7 @@ fun CatBreedsListScreen (navController: NavHostController?, viewModel: CatBreedV
                                 ) {
                                     Icon(
                                         Icons.Default.ArrowBack,
-                                        contentDescription = "Previous Page"
+                                        contentDescription = stringResource(R.string.previous_page)
                                     )
                                 }
 
@@ -192,7 +193,7 @@ fun CatBreedsListScreen (navController: NavHostController?, viewModel: CatBreedV
                                 ) {
                                     Icon(
                                         Icons.Default.ArrowForward,
-                                        contentDescription = "Next Page"
+                                        contentDescription = stringResource(R.string.next_page)
                                     )
                                 }
                             }
@@ -204,13 +205,13 @@ fun CatBreedsListScreen (navController: NavHostController?, viewModel: CatBreedV
             is Resource.Error -> {
                 val errorMsg = (catBreedsResource as Resource.Error).message
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "Erro: $errorMsg", color = Color.Red)
+                    Text(text = "Error: $errorMsg", color = Color.Red)
                 }
             }
 
             null -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Nenhum dado ainda")
+                    Text(stringResource(R.string.not_found))
                 }
             }
         }
@@ -236,12 +237,12 @@ fun LandscapeCatBreedsListScreen (navController: NavHostController?, viewModel: 
         ) {
             Button(
                 onClick = {
-                    Toast.makeText(context, "Already in this screen", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.already_in_this_screen, Toast.LENGTH_SHORT).show()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Cat Breeds List",
+                    text = stringResource(R.string.cat_breeds_list),
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
@@ -253,7 +254,7 @@ fun LandscapeCatBreedsListScreen (navController: NavHostController?, viewModel: 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Favourites List",
+                    text = stringResource(R.string.favourites_list),
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
@@ -276,10 +277,10 @@ fun LandscapeCatBreedsListScreen (navController: NavHostController?, viewModel: 
                     active = it
                 },
                 placeholder = {
-                    Text(text = "Search for the cat breed")
+                    Text(text = stringResource(R.string.search_for_the_cat_breed))
                 },
                 leadingIcon = {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search Icon")
+                    Icon(imageVector = Icons.Default.Search, contentDescription = stringResource(R.string.search_for_the_cat_breed))
                 },
                 trailingIcon = {
                     if(active) {
@@ -293,7 +294,7 @@ fun LandscapeCatBreedsListScreen (navController: NavHostController?, viewModel: 
                                 }
                             },
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Close Icon"
+                            contentDescription = stringResource(R.string.close_icon)
                         )
                     }
                 }
@@ -339,7 +340,7 @@ fun LandscapeCatBreedsListScreen (navController: NavHostController?, viewModel: 
                                     ) {
                                         Icon(
                                             Icons.Default.ArrowBack,
-                                            contentDescription = "Previous Page"
+                                            contentDescription = stringResource(R.string.previous_page)
                                         )
                                     }
 
@@ -357,7 +358,7 @@ fun LandscapeCatBreedsListScreen (navController: NavHostController?, viewModel: 
                                     ) {
                                         Icon(
                                             Icons.Default.ArrowForward,
-                                            contentDescription = "Next Page"
+                                            contentDescription = stringResource(R.string.next_page)
                                         )
                                     }
                                 }
@@ -369,13 +370,13 @@ fun LandscapeCatBreedsListScreen (navController: NavHostController?, viewModel: 
                 is Resource.Error -> {
                     val errorMsg = (catBreedsResource as Resource.Error).message
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(text = "Erro: $errorMsg", color = Color.Red)
+                        Text(text = "Error: $errorMsg", color = Color.Red)
                     }
                 }
 
                 null -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Nenhum dado ainda")
+                        Text(stringResource(R.string.not_found))
                     }
                 }
             }

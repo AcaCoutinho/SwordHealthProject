@@ -1,6 +1,5 @@
 package com.example.swordhealthproject.ui.composables
 
-import android.text.Layout
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,10 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.swordhealthproject.R
 import com.example.swordhealthproject.data.entities.CatBreed
 import com.example.swordhealthproject.ui.screens.Screens
 import com.example.swordhealthproject.ui.viewmodel.CatBreedViewModel
@@ -81,7 +82,7 @@ fun CatBreedCard(catBreed: CatBreed, navController: NavHostController?, viewMode
                 ) {
                     Icon(
                         imageVector = if (isFavourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = if (isFavourite) "Selected icon button" else "Unselected icon button."
+                        contentDescription = if (isFavourite) stringResource(R.string.selected_icon_button) else stringResource(R.string.unselected_icon_button)
                     )
                 }
             }

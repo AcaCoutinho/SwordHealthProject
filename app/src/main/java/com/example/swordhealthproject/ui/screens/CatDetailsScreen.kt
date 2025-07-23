@@ -24,12 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.swordhealthproject.R
 import com.example.swordhealthproject.ui.viewmodel.CatBreedViewModel
-import java.nio.file.WatchEvent
 
 @Composable
 fun CatDetailsScreen (navController: NavHostController?, viewModel: CatBreedViewModel){
@@ -44,7 +45,7 @@ fun CatDetailsScreen (navController: NavHostController?, viewModel: CatBreedView
             horizontalArrangement = Arrangement.Center
         ){
             Text(
-                text = viewModel.selectedCatBreed?.name?: "NOT FOUND",
+                text = viewModel.selectedCatBreed?.name?: stringResource(R.string.not_found),
                 fontSize = 30.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.weight(3f)
@@ -65,35 +66,35 @@ fun CatDetailsScreen (navController: NavHostController?, viewModel: CatBreedView
             ) {
                 Icon(
                     imageVector = if (isFavourite!!) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = if (isFavourite!!) "Selected icon button" else "Unselected icon button."
+                    contentDescription = if (isFavourite!!) stringResource(R.string.selected_icon_button) else stringResource(R.string.unselected_icon_button)
                 )
             }
         }
 
         if(viewModel.selectedCatBreed?.image?.isEmpty() == false){
             AsyncImage(
-                model = viewModel.selectedCatBreed?.image?: "NOT FOUND",
-                contentDescription = "Cat Breed Image",
+                model = viewModel.selectedCatBreed?.image?: stringResource(R.string.not_found),
+                contentDescription = stringResource(R.string.cat_breed_image),
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
             )
         }
 
         Text(
-            text = "Lifespan: ${viewModel.selectedCatBreed?.life_span?: "NOT FOUND"}",
+            text = "Lifespan: ${viewModel.selectedCatBreed?.life_span?: stringResource(R.string.not_found)}",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(0.dp, 4.dp)
         )
 
         Text(
-            text = "Description: ${viewModel.selectedCatBreed?.description?: "NOT FOUND"}",
+            text = "Description: ${viewModel.selectedCatBreed?.description?: stringResource(R.string.not_found)}",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(0.dp, 4.dp)
         )
         Text(
-            text = "Temperament: ${viewModel.selectedCatBreed?.temperament?: "NOT FOUND"}",
+            text = "Temperament: ${viewModel.selectedCatBreed?.temperament?: stringResource(R.string.not_found)}",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(0.dp, 4.dp)
@@ -118,7 +119,7 @@ fun LandscapeCatDetailsScreen (navController: NavHostController?, viewModel: Cat
                 horizontalArrangement = Arrangement.Center
             ){
                 Text(
-                    text = viewModel.selectedCatBreed?.name?: "NOT FOUND",
+                    text = viewModel.selectedCatBreed?.name?: stringResource(R.string.not_found),
                     fontSize = 30.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.weight(3f)
@@ -139,15 +140,15 @@ fun LandscapeCatDetailsScreen (navController: NavHostController?, viewModel: Cat
                 ) {
                     Icon(
                         imageVector = if (isFavourite!!) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = if (isFavourite!!) "Selected icon button" else "Unselected icon button."
+                        contentDescription = if (isFavourite!!) stringResource(R.string.selected_icon_button) else stringResource(R.string.unselected_icon_button)
                     )
                 }
             }
 
             if(viewModel.selectedCatBreed?.image?.isEmpty() == false){
                 AsyncImage(
-                    model = viewModel.selectedCatBreed?.image?: "NOT FOUND",
-                    contentDescription = "Cat Breed Image",
+                    model = viewModel.selectedCatBreed?.image?: stringResource(R.string.not_found),
+                    contentDescription = stringResource(R.string.cat_breed_image),
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
                 )
@@ -158,20 +159,20 @@ fun LandscapeCatDetailsScreen (navController: NavHostController?, viewModel: Cat
             modifier = Modifier.fillMaxHeight().weight(2f).padding(16.dp)
         ) {
             Text(
-                text = "Lifespan: ${viewModel.selectedCatBreed?.life_span?: "NOT FOUND"}",
+                text = "Lifespan: ${viewModel.selectedCatBreed?.life_span?: stringResource(R.string.not_found)}",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(0.dp, 4.dp)
             )
 
             Text(
-                text = "Description: ${viewModel.selectedCatBreed?.description?: "NOT FOUND"}",
+                text = "Description: ${viewModel.selectedCatBreed?.description?: stringResource(R.string.not_found)}",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(0.dp, 4.dp)
             )
             Text(
-                text = "Temperament: ${viewModel.selectedCatBreed?.temperament?: "NOT FOUND"}",
+                text = "Temperament: ${viewModel.selectedCatBreed?.temperament?: stringResource(R.string.not_found)}",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(0.dp, 4.dp)

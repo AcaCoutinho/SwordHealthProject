@@ -1,5 +1,17 @@
 <resources>
-    <string name="app_name">SwordHealthProject</string>
+    <string name="app_name">Sword Health Project</string>
     <string name="title_activity_cat_details_screen">CatDetailsScreen</string>
     <string name="not_found">Not Found</string>
+    <string name="selected_icon_button">Selected icon button</string>
+    <string name="unselected_icon_button">Unselected icon button</string>
+    <string name="cat_breed_image">Cat Breed Image</string>
+    <string name="already_in_this_screen">Already in this screen</string>
+    <string name="cat_breeds_list">Cat Breeds List</string>
+    <string name="there_are_no_favourites">There are no favourites</string>
+    <string name="favourites_list">Favourites List</string>
+    <string name="search_for_the_cat_breed">Search for the cat breed</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="close_icon">Close Icon</string>
+    <string name="previous_page">Previous Page</string>
+    <string name="next_page">Next Page</string>
 </resources>
